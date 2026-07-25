@@ -3,6 +3,8 @@ import ChatInput from "../components/chat/ChatInput";
 import ResponsePanel from "../components/chat/ResponsePanel";
 import KPICards from "../components/dashboard/KPICards";
 import RevenueChart from "../components/charts/RevenueChart";
+import RegionalSales from "../components/dashboard/RegionalSales";
+import TopProducts from "../components/dashboard/TopProducts";
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-100">
@@ -21,6 +23,8 @@ export default function Home() {
         <ResponsePanel />
         <KPICards />
         <RevenueChart />
+        <RegionalSales />
+        <TopProducts />
       </div>
     </main>
   );
