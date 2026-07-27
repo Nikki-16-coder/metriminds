@@ -5,6 +5,7 @@ import KPICards from "../components/dashboard/KPICards";
 import RevenueChart from "../components/charts/RevenueChart";
 import RegionalSales from "../components/dashboard/RegionalSales";
 import TopProducts from "../components/dashboard/TopProducts";
+import AIInsights from "../components/dashboard/AIInsights";
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-100">
@@ -25,6 +26,7 @@ export default function Home() {
         <RevenueChart />
         <RegionalSales />
         <TopProducts />
+        <AIInsights />
       </div>
     </main>
   );
