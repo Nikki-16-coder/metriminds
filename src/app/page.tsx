@@ -11,14 +11,19 @@ export default function Home() {
     <main className="min-h-screen bg-gray-100">
       <Header />
 
-      <div className="mx-auto max-w-5xl p-8">
-        <h2 className="text-2xl font-semibold">
-          Welcome to MetricMind
-        </h2>
+      <div className="mb-8">
+  <h1 className="text-3xl font-bold text-gray-900">
+    Welcome to MetricMind
+  </h1>
 
-        <p className="mt-2 text-gray-600">
-          Your AI-powered Business Intelligence Assistant
-        </p>
+  <p className="mt-2 text-gray-600">
+    AI-powered Business Intelligence Dashboard
+  </p>
+
+  <p className="mt-1 text-sm text-gray-500">
+    Analyze revenue, profit, regions, and AI-generated business insights.
+  </p>
+
 
         <ChatInput />
         <ResponsePanel />
