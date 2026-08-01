@@ -1,0 +1,14 @@
+{
+  "name": "metricmind-backend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "cubejs-server"
+  },
+  "template": "docker",
+  "templateVersion": "1.7.15",
+  "devDependencies": {
+    "@cubejs-backend/server": "^1.7.15",
+    "@cubejs-backend/snowflake-driver": "^1.7.15"
+  }
+}
