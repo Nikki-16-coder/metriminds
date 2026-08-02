@@ -1,0 +1,46 @@
+cubes:
+  - name: fact_sales
+
+    sql_table: ANALYTICS.FACT_SALES
+
+    dimensions:
+      - name: sale_id
+        sql: SALE_ID
+        type: number
+        primary_key: true
+
+      - name: customer_id
+        sql: CUSTOMER_ID
+        type: number
+
+      - name: product_id
+        sql: PRODUCT_ID
+        type: number
+
+      - name: region_id
+        sql: REGION_ID
+        type: number
+
+      - name: sale_date
+        sql: SALE_DATE
+        type: time
+
+    measures:
+      - name: total_revenue
+        sql: REVENUE
+        type: sum
+
+      - name: total_cost
+        sql: COST
+        type: sum
+
+      - name: total_profit
+        sql: "{CUBE}.REVENUE - {CUBE}.COST"
+        type: sum
+
+      - name: total_quantity
+        sql: QUANTITY
+        type: sum
+
+      - name: total_orders
+        type: count
