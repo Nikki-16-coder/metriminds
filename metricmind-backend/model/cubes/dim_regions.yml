@@ -1,0 +1,22 @@
+cubes:
+  - name: dim_regions
+
+    sql_table: ANALYTICS.DIM_REGIONS
+
+    dimensions:
+      - name: region_id
+        sql: REGION_ID
+        type: number
+        primary_key: true
+
+      - name: region_name
+        sql: REGION_NAME
+        type: string
+
+      - name: country
+        sql: COUNTRY
+        type: string
+
+    measures:
+      - name: total_regions
+        type: count

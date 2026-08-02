@@ -1,0 +1,26 @@
+cubes:
+  - name: dim_products
+
+    sql_table: ANALYTICS.DIM_PRODUCTS
+
+    dimensions:
+      - name: product_id
+        sql: PRODUCT_ID
+        type: number
+        primary_key: true
+
+      - name: product_name
+        sql: PRODUCT_NAME
+        type: string
+
+      - name: category
+        sql: CATEGORY
+        type: string
+
+      - name: unit_price
+        sql: UNIT_PRICE
+        type: number
+
+    measures:
+      - name: total_products
+        type: count

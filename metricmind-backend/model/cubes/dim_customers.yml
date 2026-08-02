@@ -1,0 +1,30 @@
+cubes:
+  - name: dim_customers
+
+    sql_table: ANALYTICS.DIM_CUSTOMERS
+
+    dimensions:
+      - name: customer_id
+        sql: CUSTOMER_ID
+        type: number
+        primary_key: true
+
+      - name: customer_name
+        sql: CUSTOMER_NAME
+        type: string
+
+      - name: customer_type
+        sql: CUSTOMER_TYPE
+        type: string
+
+      - name: email
+        sql: EMAIL
+        type: string
+
+      - name: region_id
+        sql: REGION_ID
+        type: number
+
+    measures:
+      - name: total_customers
+        type: count
