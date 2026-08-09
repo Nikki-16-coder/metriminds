@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@cubejs-client/core": "^1.7.16",
+    "@cubejs-client/react": "^1.7.16",
     "echarts": "^6.1.0",
     "echarts-for-react": "^3.0.6",
     "lucide-react": "^1.25.0",
