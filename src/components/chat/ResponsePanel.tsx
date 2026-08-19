@@ -3,14 +3,15 @@
 type QueryResponse = {
   question: string;
   measure: string;
-  queryType: "metric" | "breakdown";
+  queryType: "metric" | "breakdown" | "time";
   responseType?: "currency" | "number" | "percent";
   value?: string;
   dimensions?: string[];
-  data?: {
-    "dim_regions.region_name": string;
-    "fact_sales.total_revenue": string;
+  timeDimensions?: {
+    dimension: string;
+    granularity: string;
   }[];
+  data?: Record<string, string>[];
 };
 
 type ResponsePanelProps = {
@@ -52,6 +53,7 @@ export default function ResponsePanel({
         </p>
       )}
 
+      {/* Single metric */}
       {response?.queryType === "metric" && (
         <>
           <p className="text-sm text-gray-500">
@@ -64,33 +66,62 @@ export default function ResponsePanel({
         </>
       )}
 
-      {response?.queryType === "breakdown" && response.data && (
-        <div>
-          <p className="mb-4 text-sm text-gray-500">
-            {response.question}
-          </p>
+      {/* Breakdown and time-based results */}
+      {(response?.queryType === "breakdown" ||
+        response?.queryType === "time") &&
+        response.data && (
+          <div>
+            <p className="mb-4 text-sm text-gray-500">
+              {response.question}
+            </p>
 
-          <div className="space-y-3">
-            {response.data.map((row) => (
-              <div
-                key={row["dim_regions.region_name"]}
-                className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
-              >
-                <span className="font-medium text-gray-800">
-                  {row["dim_regions.region_name"]}
-                </span>
+            <div className="space-y-3">
+              {response.data.map((row, index) => {
+                const dimensionKey =
+                  response.queryType === "time"
+                    ? "fact_sales.sale_date.month"
+                    : response.dimensions?.[0] ?? "";
 
-                <span className="font-semibold text-blue-600">
-                  ₹
-                  {Number(
-                    row["fact_sales.total_revenue"]
-                  ).toLocaleString("en-IN")}
-                </span>
-              </div>
-            ))}
+                const dimensionValue = row[dimensionKey];
+
+                const measureValue =
+                  row[response.measure];
+
+                let displayLabel = dimensionValue;
+
+                if (response.queryType === "time") {
+                  const date = new Date(dimensionValue);
+
+                  displayLabel = date.toLocaleDateString(
+                    "en-US",
+                    {
+                      month: "short",
+                      year: "numeric",
+                    }
+                  );
+                }
+
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+                  >
+                    <span className="font-medium text-gray-800">
+                      {displayLabel}
+                    </span>
+
+                    <span className="font-semibold text-blue-600">
+                      ₹
+                      {Number(measureValue).toLocaleString(
+                        "en-IN"
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

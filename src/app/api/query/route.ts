@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 
+type QueryResponseType = "currency" | "number" | "percent";
+
+type QueryRow = Record<string, string>;
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
     const question = body.question;
 
     if (!question) {
@@ -20,7 +23,7 @@ export async function POST(request: Request) {
     // --------------------------------
 
     let measure = "fact_sales.total_revenue";
-    let responseType: "currency" | "number" | "percent" = "currency";
+    let responseType: QueryResponseType = "currency";
 
     if (
       normalizedQuestion.includes("profit margin") ||
@@ -46,11 +49,16 @@ export async function POST(request: Request) {
     }
 
     // --------------------------------
-    // Determine dimension
+    // Determine dimension / time
     // --------------------------------
 
     let dimensions: string[] = [];
-    let queryType = "metric";
+    let queryType: "metric" | "breakdown" | "time" = "metric";
+
+    let timeDimensions: {
+      dimension: string;
+      granularity: "month";
+    }[] = [];
 
     if (
       normalizedQuestion.includes("by region") ||
@@ -59,7 +67,36 @@ export async function POST(request: Request) {
     ) {
       dimensions = ["dim_regions.region_name"];
       queryType = "breakdown";
+    } else if (
+      normalizedQuestion.includes("by product") ||
+      normalizedQuestion.includes("by products") ||
+      normalizedQuestion.includes("product")
+    ) {
+      dimensions = ["dim_products.product_name"];
+      queryType = "breakdown";
+    } else if (
+      normalizedQuestion.includes("over time") ||
+      normalizedQuestion.includes("monthly") ||
+      normalizedQuestion.includes("by month") ||
+      normalizedQuestion.includes("month")
+    ) {
+      timeDimensions = [
+        {
+          dimension: "fact_sales.sale_date",
+          granularity: "month",
+        },
+      ];
+
+      queryType = "time";
     }
+
+    // --------------------------------
+    // Detect highest / top queries
+    // --------------------------------
+
+    const isHighestQuery =
+      normalizedQuestion.includes("highest") ||
+      normalizedQuestion.includes("top");
 
     // --------------------------------
     // Build Cube query
@@ -68,6 +105,7 @@ export async function POST(request: Request) {
     const cubeQuery = {
       measures: [measure],
       dimensions,
+      timeDimensions,
     };
 
     console.log("Cube Query:", cubeQuery);
@@ -88,7 +126,30 @@ export async function POST(request: Request) {
 
     const cubeData = await cubeResponse.json();
 
-    const resultData = cubeData.data || [];
+    const resultData: QueryRow[] = cubeData.data || [];
+
+    // --------------------------------
+    // Highest / Top result
+    // --------------------------------
+
+    if (isHighestQuery && dimensions.length > 0 && resultData.length > 0) {
+      const highestRow = resultData.reduce(
+        (highest: QueryRow, row: QueryRow) => {
+          const highestValue = Number(highest[measure] ?? 0);
+          const currentValue = Number(row[measure] ?? 0);
+
+          return currentValue > highestValue ? row : highest;
+        }
+      );
+
+      return NextResponse.json({
+        question,
+        measure,
+        dimensions,
+        data: [highestRow],
+        queryType: "breakdown",
+      });
+    }
 
     // --------------------------------
     // Single metric response
@@ -111,13 +172,14 @@ export async function POST(request: Request) {
     }
 
     // --------------------------------
-    // Breakdown response
+    // Breakdown / time response
     // --------------------------------
 
     return NextResponse.json({
       question,
       measure,
       dimensions,
+      timeDimensions,
       data: resultData,
       queryType,
     });

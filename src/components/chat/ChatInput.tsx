@@ -5,14 +5,11 @@ import { useState } from "react";
 type QueryResponse = {
   question: string;
   measure: string;
-  queryType: "metric" | "breakdown";
+   queryType: "metric" | "breakdown" | "time";
   responseType?: "currency" | "number" | "percent";
   value?: string;
   dimensions?: string[];
-  data?: {
-    "dim_regions.region_name": string;
-    "fact_sales.total_revenue": string;
-  }[];
+  data?: Record<string, string>[];
 };
 
 type ChatInputProps = {
