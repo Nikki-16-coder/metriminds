@@ -7,18 +7,18 @@ const insights = [
 
 export default function AIInsights() {
   return (
-    <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6 shadow-md">
-      <h2 className="mb-6 text-xl font-semibold">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <h2 className="mb-5 text-xl font-semibold tracking-tight text-gray-900">
         🧠 AI Insights
       </h2>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {insights.map((insight, index) => (
           <div
             key={index}
-            className="rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4"
+            className="rounded-xl border border-blue-100 border-l-4 border-l-blue-500 bg-blue-50/60 px-4 py-4 transition hover:bg-blue-50"
           >
-            <p className="text-gray-700">
+            <p className="text-sm leading-6 text-gray-700">
               {insight}
             </p>
           </div>

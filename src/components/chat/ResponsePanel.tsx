@@ -43,15 +43,17 @@ export default function ResponsePanel({
   };
 
   return (
-    <div className="mt-8 rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-xl font-semibold">
+    <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <h2 className="mb-5 text-xl font-semibold tracking-tight text-gray-900">
         🤖 AI Response
       </h2>
 
       {!response && (
-        <p className="text-gray-600">
-          Waiting for your question...
-        </p>
+        <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-6 text-center">
+          <p className="text-sm text-gray-500">
+            Waiting for your question...
+          </p>
+        </div>
       )}
 
       {/* Single metric */}
@@ -61,29 +63,32 @@ export default function ResponsePanel({
             {response.question}
           </p>
 
-          <p className="mt-3 text-3xl font-bold text-blue-600">
+          <p className="mt-3 text-4xl font-bold tracking-tight text-blue-600">
             {formatMetricValue()}
           </p>
         </>
       )}
 
-     {/* Breakdown, time, and diagnostic results */}
-{(response?.queryType === "breakdown" ||
-  response?.queryType === "time" ||
-  response?.queryType === "diagnostic") &&
-  response.data && (
+      {/* Breakdown, time, and diagnostic results */}
+      {(response?.queryType === "breakdown" ||
+        response?.queryType === "time" ||
+        response?.queryType === "diagnostic") &&
+        response.data && (
           <div>
-  <p className="mb-4 text-sm text-gray-500">
-    {response.question}
-  </p>
+            <p className="mb-4 text-sm text-gray-500">
+              {response.question}
+            </p>
 
-  {response.queryType === "diagnostic" && response.explanation && (
-    <p className="mb-4 rounded-lg bg-blue-50 p-4 text-gray-800">
-      {response.explanation}
-    </p>
-  )}
+            {response.queryType === "diagnostic" &&
+              response.explanation && (
+                <div className="mb-5 rounded-xl border border-blue-100 bg-blue-50/60 p-4">
+                  <p className="text-sm leading-6 text-gray-700">
+                    {response.explanation}
+                  </p>
+                </div>
+              )}
 
-  <div className="space-y-3">
+            <div className="space-y-3">
               {response.data.map((row, index) => {
                 const dimensionKey =
                   response.queryType === "time"
@@ -94,16 +99,19 @@ export default function ResponsePanel({
 
                 const measureValue =
                   response.queryType === "diagnostic"
-                  ? row.margin
-                  : row[response.measure];
+                    ? row.margin
+                    : row[response.measure];
 
                 let displayLabel =
                   response.queryType === "diagnostic"
-                  ? new Date(row.month).toLocaleDateString("en-US", {
-                   month: "short",
-                    year: "numeric",
-                       })
-                      : dimensionValue;
+                    ? new Date(row.month).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          year: "numeric",
+                        }
+                      )
+                    : dimensionValue;
 
                 if (response.queryType === "time") {
                   const date = new Date(dimensionValue);
@@ -120,16 +128,18 @@ export default function ResponsePanel({
                 return (
                   <div
                     key={index}
-                    className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+                    className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 transition hover:bg-gray-100"
                   >
-                    <span className="font-medium text-gray-800">
+                    <span className="font-medium text-gray-700">
                       {displayLabel}
                     </span>
 
                     <span className="font-semibold text-blue-600">
                       {response.queryType === "diagnostic"
-                       ? `${Number(measureValue).toFixed(2)}%`
-                        : `₹${Number(measureValue).toLocaleString("en-IN")}`}
+                        ? `${Number(measureValue).toFixed(2)}%`
+                        : `₹${Number(measureValue).toLocaleString(
+                            "en-IN"
+                          )}`}
                     </span>
                   </div>
                 );
