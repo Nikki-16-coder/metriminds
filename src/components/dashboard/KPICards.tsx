@@ -44,7 +44,7 @@ export default function KPICards() {
             ? "Loading..."
             : error
             ? "Error"
-            : `${Number(margin).toFixed(2)}%`
+            : `${(Number(margin) * 100).toFixed(2)}%`
         }
       />
 

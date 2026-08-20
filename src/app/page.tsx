@@ -23,32 +23,59 @@ type QueryResponse = {
 
 export default function Home() {
   const [response, setResponse] = useState<QueryResponse | null>(null);
+
   return (
-    <main className="min-h-screen bg-gray-100">
+    <main className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Welcome to MetricMind
-        </h1>
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
-        <p className="mt-2 text-gray-600">
-          AI-powered Business Intelligence Dashboard
-        </p>
+        {/* Welcome Section */}
+        <section className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            Welcome to MetricMind
+          </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
-          Analyze revenue, profit, regions, and AI-generated business insights.
-        </p>
+          <p className="mt-2 text-base text-gray-600">
+            AI-powered Business Intelligence Dashboard
+          </p>
 
-        <ChatInput onResponse={setResponse} />
+          <p className="mt-1 text-sm text-gray-500">
+            Analyze revenue, profit, regions, and AI-generated business insights.
+          </p>
+        </section>
 
-        <ResponsePanel response={response} />
+        {/* Chat Section */}
+        <section className="mb-8">
+          <ChatInput onResponse={setResponse} />
+        </section>
 
-        <KPICards />
-        <RevenueChart />
-        <RegionalSales />
-        <TopProducts />
-        <AIInsights />
+        {/* AI Response */}
+        <section className="mb-8">
+          <ResponsePanel response={response} />
+        </section>
+
+        {/* KPI Cards */}
+        <section className="mb-8">
+          <KPICards />
+        </section>
+
+        {/* Revenue Chart */}
+        <section className="mb-8">
+          <RevenueChart />
+        </section>
+
+        {/* Regional Sales + Top Products */}
+        <section className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <RegionalSales />
+          <TopProducts />
+        </section>
+
+        {/* AI Insights */}
+        <section className="pb-8">
+          <AIInsights />
+        </section>
+
       </div>
     </main>
   );

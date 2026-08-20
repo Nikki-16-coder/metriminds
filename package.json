@@ -11,10 +11,13 @@
   "dependencies": {
     "@cubejs-client/core": "^1.7.16",
     "@cubejs-client/react": "^1.7.16",
+    "@google/genai": "^2.17.1",
     "echarts": "^6.1.0",
     "echarts-for-react": "^3.0.6",
     "lucide-react": "^1.25.0",
     "next": "16.2.10",
+    "ollama": "^0.6.3",
+    "openai": "^7.5.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

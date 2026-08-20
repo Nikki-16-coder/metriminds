@@ -3,8 +3,9 @@
 type QueryResponse = {
   question: string;
   measure: string;
-  queryType: "metric" | "breakdown" | "time";
+  queryType: "metric" | "breakdown" | "time" | "diagnostic";
   responseType?: "currency" | "number" | "percent";
+  explanation?: string;
   value?: string;
   dimensions?: string[];
   timeDimensions?: {
@@ -66,16 +67,23 @@ export default function ResponsePanel({
         </>
       )}
 
-      {/* Breakdown and time-based results */}
-      {(response?.queryType === "breakdown" ||
-        response?.queryType === "time") &&
-        response.data && (
+     {/* Breakdown, time, and diagnostic results */}
+{(response?.queryType === "breakdown" ||
+  response?.queryType === "time" ||
+  response?.queryType === "diagnostic") &&
+  response.data && (
           <div>
-            <p className="mb-4 text-sm text-gray-500">
-              {response.question}
-            </p>
+  <p className="mb-4 text-sm text-gray-500">
+    {response.question}
+  </p>
 
-            <div className="space-y-3">
+  {response.queryType === "diagnostic" && response.explanation && (
+    <p className="mb-4 rounded-lg bg-blue-50 p-4 text-gray-800">
+      {response.explanation}
+    </p>
+  )}
+
+  <div className="space-y-3">
               {response.data.map((row, index) => {
                 const dimensionKey =
                   response.queryType === "time"
@@ -85,9 +93,17 @@ export default function ResponsePanel({
                 const dimensionValue = row[dimensionKey];
 
                 const measureValue =
-                  row[response.measure];
+                  response.queryType === "diagnostic"
+                  ? row.margin
+                  : row[response.measure];
 
-                let displayLabel = dimensionValue;
+                let displayLabel =
+                  response.queryType === "diagnostic"
+                  ? new Date(row.month).toLocaleDateString("en-US", {
+                   month: "short",
+                    year: "numeric",
+                       })
+                      : dimensionValue;
 
                 if (response.queryType === "time") {
                   const date = new Date(dimensionValue);
@@ -111,10 +127,9 @@ export default function ResponsePanel({
                     </span>
 
                     <span className="font-semibold text-blue-600">
-                      ₹
-                      {Number(measureValue).toLocaleString(
-                        "en-IN"
-                      )}
+                      {response.queryType === "diagnostic"
+                       ? `${Number(measureValue).toFixed(2)}%`
+                        : `₹${Number(measureValue).toLocaleString("en-IN")}`}
                     </span>
                   </div>
                 );

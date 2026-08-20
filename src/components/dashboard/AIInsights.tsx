@@ -1,8 +1,8 @@
 const insights = [
-  "Revenue increased by 18% compared to last month.",
-  "Europe recorded the lowest profit margin this quarter.",
-  "Laptop Pro X remains the highest-selling product.",
-  "Asia continues to show steady revenue growth.",
+  "Total revenue is ₹214,100 across the available sales period.",
+  "Europe generated the highest regional revenue at ₹124,000.",
+  "Asia recorded the lowest profit margin at 22.86%.",
+  "European profit margin declined from 25.31% in February to 19.46% in April.",
 ];
 
 export default function AIInsights() {

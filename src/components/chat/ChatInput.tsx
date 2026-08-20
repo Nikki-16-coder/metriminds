@@ -50,26 +50,26 @@ export default function ChatInput({ onResponse }: ChatInputProps) {
   };
 
   return (
-    <div className="mt-8 flex gap-4">
-      <input
-        type="text"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSend();
-          }
-        }}
-        placeholder="Ask a business question..."
-        className="flex-1 rounded-lg border border-gray-300 p-3"
-      />
+  <div className="mt-8 flex w-full gap-3">
+    <input
+      type="text"
+      value={question}
+      onChange={(e) => setQuestion(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleSend();
+        }
+      }}
+      placeholder="Ask a business question..."
+      className="flex-1 rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+    />
 
-      <button
-        onClick={handleSend}
-        className="rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
-      >
-        Send
-      </button>
-    </div>
-  );
+    <button
+      onClick={handleSend}
+      className="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98]"
+    >
+      Send
+    </button>
+  </div>
+);
 }
